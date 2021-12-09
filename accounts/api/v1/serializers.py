@@ -4,6 +4,7 @@ API V1: Accounts Serializers
 ###
 # Libraries
 ###
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_auth.models import TokenModel
 from rest_auth.serializers import (
@@ -27,6 +28,12 @@ class UserTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = TokenModel
         fields = ('key', 'user',)
+
+
+class UserModelUsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('username',)
 
 
 class ChangeEmailSerializer(serializers.Serializer):
