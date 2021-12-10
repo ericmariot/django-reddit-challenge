@@ -28,9 +28,10 @@ class TopicSerializer(serializers.ModelSerializer):
             "url_name",
         )
 
+
 class TopicRetrieveSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    
+
     class Meta:
         model = Topic
         fields = (
@@ -45,12 +46,9 @@ class TopicRetrieveSerializer(serializers.ModelSerializer):
             "updated_at",
         )
 
-class TopicCreateUpdateDeleteSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data["author"] = BaseUserDetailsSerializer(instance.author).data
 
-        return data
+class TopicCreateUpdateDeleteSerializer(serializers.ModelSerializer):
+    author = UserModelUsernameSerializer(read_only=True)
 
     class Meta:
         model = Topic
