@@ -11,6 +11,7 @@ from topics.models import Topic
 from topics.api.v1.serializers import (
     TopicRetrieveSerializer,
     TopicSerializer,
+    TopicCreateUpdateDeleteSerializer,
 )
 
 ###
@@ -31,4 +32,6 @@ class TopicViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return TopicRetrieveSerializer
 
-        return TopicSerializer
+        return TopicCreateUpdateDeleteSerializer
+
+    lookup_field = "url_name"
