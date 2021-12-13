@@ -6,7 +6,7 @@ API V1: Topics Views
 ###
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from helpers.permissions import IsOwnerOrReadOnly
+from helpers.permissions import IsAuthorOrReadOnly
 
 from topics.models import Topic
 from topics.api.v1.serializers import (
@@ -25,7 +25,7 @@ from topics.api.v1.serializers import (
 ###
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

@@ -9,7 +9,7 @@ from rest_framework import permissions
 ###
 # Helpers
 ###
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class IsAuthorOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of an object to edit it.
     """
@@ -20,5 +20,5 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # Write permissions are only allowed to the owner of the snippet.
-        return obj.owner == request.user
+        # Write permissions are only allowed to the author of the topc.
+        return obj.author == request.user
