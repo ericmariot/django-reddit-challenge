@@ -25,7 +25,7 @@ from topics.api.v1.serializers import (
 ###
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = [IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
