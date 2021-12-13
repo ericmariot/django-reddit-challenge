@@ -6,9 +6,6 @@ API V1: Topics Serializers
 # Libraries
 ###
 from rest_framework import serializers
-from rest_auth.serializers import (
-    UserDetailsSerializer as BaseUserDetailsSerializer,
-)
 
 from accounts.api.v1.serializers import UserModelUsernameSerializer
 from topics.models import Topic

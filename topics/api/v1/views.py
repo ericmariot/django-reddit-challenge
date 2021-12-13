@@ -5,7 +5,6 @@ API V1: Topics Views
 # Libraries
 ###
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from helpers.permissions import IsAuthorOrReadOnly
 
 from topics.models import Topic
