@@ -9,11 +9,12 @@ from rest_framework import serializers
 
 from accounts.api.v1.serializers import UserModelUsernameSerializer
 from posts.models import Post
+
 ###
 # Serializers
 class PostSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    topic = "topics.TopicSerializer"
+    topic = serializers.ReadOnlyField(source='topic.url_name')
 
     class Meta:
         model = Post
@@ -29,7 +30,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostRetrieveSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    topic = "topics.TopicSerializer"
+    topic = serializers.ReadOnlyField(source='topic.url_name')
 
     class Meta:
         model = Post
