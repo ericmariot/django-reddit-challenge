@@ -1,86 +1,75 @@
 """
-API V1: Posts Serializers
+API V1: Comments Serializers
 """
 
 ###
 # Libraries
 ###
 from rest_framework import serializers
-from rest_framework.fields import SerializerMethodField
 
 from accounts.api.v1.serializers import UserModelUsernameSerializer
 from comments.models import Comment
-from comments.api.v1.serializers import (
-    NestedCommentSerializer,
-)
-from posts.models import Post
 
 ###
 # Serializers
-class PostSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    topic = serializers.ReadOnlyField(source='topic.url_name')
+    post = serializers.ReadOnlyField(source='post.title')
 
     class Meta:
-        model = Post
+        model = Comment
         fields = (
             "id",
             "title",
             "content",
             "upvotes",
             "author",
-            "topic",
+            "post",
         )
 
 
-class PostRetrieveSerializer(serializers.ModelSerializer):
+class CommentRetrieveSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    topic = serializers.ReadOnlyField(source='topic.url_name')
-    comments = SerializerMethodField()
+    post = serializers.ReadOnlyField(source='post.title')
 
     class Meta:
-        model = Post
+        model = Comment
         fields = (
             "id",
             "title",
             "content",
             "upvotes",
             "author",
-            "topic",
-            "comments",
+            "post",
             "created_at",
             "updated_at",
         )
 
-    def get_comments(self, instance):
-        return NestedCommentSerializer(
-            Comment.objects.filter(post=instance).order_by("-updated_at")[:5], many=True
-        ).data
 
-
-class PostCreateUpdateDeleteSerializer(serializers.ModelSerializer):
+class CommentCreateUpdateDeleteSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer(read_only=True)
-    topic = serializers.ReadOnlyField(source="topic.url_name")
+    post = serializers.ReadOnlyField(source="post.title")
 
     class Meta:
-        model = Post
+        model = Comment
         fields = (
             "title",
             "content",
             "author",
-            "topic",
+            "post",
             "created_at",
             "updated_at",
         )
 
 
-class NestedPostSerializer(serializers.ModelSerializer):
+class NestedCommentSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer(read_only=True)
 
     class Meta:
-        model = Post
+        model = Comment
         fields = (
             "title",
             "content",
+            "upvotes",
             "author",
         )
