@@ -19,7 +19,8 @@ from posts.models import Post
 # Serializers
 class PostSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    topic = serializers.ReadOnlyField(source='topic.url_name')
+    topic = serializers.ReadOnlyField(source="topic.url_name")
+    upvotes = serializers.IntegerField(source="total_upvotes")
 
     class Meta:
         model = Post
@@ -28,15 +29,16 @@ class PostSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "upvotes",
-            "author",
             "topic",
+            "author",
         )
 
 
 class PostRetrieveSerializer(serializers.ModelSerializer):
     author = UserModelUsernameSerializer()
-    topic = serializers.ReadOnlyField(source='topic.url_name')
+    topic = serializers.ReadOnlyField(source="topic.url_name")
     comments = SerializerMethodField()
+    upvotes = serializers.IntegerField(source="total_upvotes")
 
     class Meta:
         model = Post
@@ -45,8 +47,8 @@ class PostRetrieveSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "upvotes",
-            "author",
             "topic",
+            "author",
             "comments",
             "created_at",
             "updated_at",

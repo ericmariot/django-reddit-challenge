@@ -6,9 +6,9 @@ Posts Models
 ###
 from django.db import models
 from django.conf import settings
-from django.utils.text import slugify
+from django.db.models import Q, Count
 
-from helpers.models import TimestampModel
+from helpers.models import TimestampModel, UpvoteDownvoteModel
 
 ###
 # Querysets
@@ -18,10 +18,18 @@ from helpers.models import TimestampModel
 ###
 # Models
 ###
-class Post(TimestampModel):
+class PostVotesManager(models.Manager):
+    def with_votes(self):
+        return self.annotate(
+            total_upvotes=Count("vote", filter=Q(vote=Post.Vote.UPVOTED))
+        )
+
+
+class Post(TimestampModel, UpvoteDownvoteModel):
+    objects = PostVotesManager()
+
     title = models.CharField(max_length=128)
     content = models.CharField(max_length=1024)
-    upvotes = models.IntegerField(default=0)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -37,4 +45,4 @@ class Post(TimestampModel):
         return self.title
 
     class Meta:
-        ordering = ["upvotes"]
+        ordering = ["-updated_at"]
